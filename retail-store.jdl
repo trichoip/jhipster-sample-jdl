@@ -1,0 +1,82 @@
+entity Categories{
+	categoryName String
+    description String
+}
+
+entity Products{
+	productName String
+    brand String
+    price Double
+}
+
+entity Stocks{
+	quantity Integer
+}
+
+entity Stores{
+	storeName String
+    phone String
+    street String
+    city String
+    state String
+    zipCode String
+}
+
+entity Managers{
+	managerName String
+    email String
+    phone String
+}
+
+entity Staffs{
+	staffName String
+    email String
+    phone String
+    active Boolean
+}
+
+enum PaymentMethods{
+	CASH
+    CREDIT_CARD
+    E_WALLET
+}
+
+entity Orders{
+	orderStatus Status 
+    orderDate LocalDate
+    paymentMethod PaymentMethods
+}
+
+entity OrderItems{
+	quantity Integer
+    price Double
+}
+
+enum Status{
+	COMPLETED
+    ISSUED
+    CANCELED
+}
+
+relationship OneToMany{
+	Managers{managerStaff} to Staffs{managers(managerName)}
+    Categories{productCategory} to Products{categories(categoryName)}
+    Stores{storeStaff} to Staffs{stores(storeName)}
+    Staffs{staffOrder} to Orders{staffs(staffName)}
+    Stores{storeOrder} to Orders{stores(storeName)}
+    Products{product} to Stocks{products(productName)}
+    Stores{store} to Stocks{stores(storeName)}
+}
+
+relationship ManyToOne{
+	
+    OrderItems{product} to Products
+    OrderItems{order} to Orders
+}
+
+service * with serviceClass
+paginate Products, Categories, Stocks, Managers, Staffs, Orders, OrderItems, Stores with pagination
+
+
+
+

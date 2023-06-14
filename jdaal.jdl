@@ -1,0 +1,110 @@
+
+entity ApplicationUser {
+    createdDate Instant
+    createdBy String
+    modifiedDate Instant
+    modifiedBy String
+    address String
+    avatar String
+    birthday Instant
+    email String
+    firstName String
+    lastName String
+    password String
+    phone String
+    status String
+    username String unique
+}
+entity Notification {
+    title String
+    sortDescripsion String 
+    description String
+    isRead Boolean
+    status NotificationStatus
+    createdDate Instant
+    createdBy String
+    modifiedDate Instant
+    modifiedBy String
+}
+entity Voucher {
+    discount Double
+    name String
+    startDate Instant
+    endDate Instant
+    status VorcherStatus
+    createdDate Instant
+    createdBy String
+    modifiedDate Instant
+    modifiedBy String
+}
+entity Product{
+    name String
+    price Double
+    description String
+    sortDescription String
+    quantity Integer
+    status ProductStatus
+    createdDate Instant
+    createdBy String
+    modifiedDate Instant
+    modifiedBy String
+}
+entity Image{
+    name String
+    url String
+}
+entity Category{
+    name String
+}
+entity Brand{
+    name String
+}
+entity Order{
+    totalQuantity Integer
+    totalPrice Double
+    orderBrorrowDate Instant
+    orderReturnDate Instant
+    status OrderStatus
+    createdDate Instant
+    createdBy String
+    modifiedDate Instant
+    modifiedBy String
+}
+entity OrderDetails{
+    name String
+    quantity Integer
+    price Double
+}
+enum OrderStatus {
+    PENDING, DELIVERING, DELIVERED, CANCELLED
+}
+enum ProductStatus {
+    PENDING, APPROVED, REJECTED
+}
+enum VorcherStatus {
+    DISCOUNT, FREE_SHIPPING
+}
+enum NotificationStatus {
+    PENDING, APPROVED, REJECTED
+}
+relationship OneToMany {
+    Brand{product} to Product{brand}
+    Category{product} to Product{category}
+    Product{image} to Image{product}
+    Voucher{order} to Order{voucher}
+    ApplicationUser{order} to Order{appUser}
+}
+relationship ManyToMany {
+    ApplicationUser{notification} to Notification{appUser}
+}
+relationship ManyToOne {
+    OrderDetails{order} to Order{orderDetail}
+    OrderDetails{product} to Product{orderDetail}
+}
+relationship OneToOne {
+    ApplicationUser{internalUser} to User with jpaDerivedIdentifier
+}
+paginate * with pagination
+service * with serviceImpl
+dto * with mapstruct
+filter Product

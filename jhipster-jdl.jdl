@@ -1,0 +1,80 @@
+entity Product{
+	id Interger required
+    name String required
+    quantity Interger required
+    createdDate Date required
+    updatedDate Date required
+    price Double required
+    expiredDate Date required
+    category Category required
+}
+
+enum Category{
+	Food
+    Drink
+    Vegetable
+}
+
+entity Staff{
+	id Interger required
+    name String required
+    role Role required
+}
+
+enum Role{
+	Manager
+    Seller
+}
+
+entity PreOrder{
+	id Interger required
+    quantity Interger required
+    totalPrice Double required
+    orderedDate Date required
+    status Status required
+    idStaff Interger required
+}
+
+entity Invoice{
+	id Interger required
+    idProduct Interger required
+    idPreOrder Interger required
+    
+}
+
+enum Status{
+	PAID
+    ISSUE
+    CANCELED
+}
+
+entity Report{
+	idStaff Interger required
+    idInvoice Interger required
+}
+relationship OneToMany {
+    Report{idStaff} to Staff
+    Report{idInvoice} to Invoice
+}
+
+relationship OneToMany {
+    Invoice{idProduct} to Product
+}
+
+relationship OneToOne {
+    PreOrder{idStaff} to Staff
+    Invoice{idPreOrder} to PreOrder
+}
+
+relationship OneToOne {
+    Staff{user} to User
+}
+
+service * with serviceClass
+paginate Product, Report, Staff, Invoice, PreOrder with pagination
+
+
+
+
+
+
